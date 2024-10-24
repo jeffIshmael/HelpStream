@@ -1,5 +1,6 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import type { Config } from "tailwindcss";
+
+const config: Config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -8,6 +9,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        background: "var(--background)",
+        foreground: "var(--foreground)",
+
         /** primary */
         prosperity: "#FCFF52",
         forest: "#476520",
@@ -27,8 +31,13 @@ module.exports = {
         citrus: "#FF9A51",
         lotus: "#FFA3EB",
         lavender: "#B490FF",
+        /** others */
+        nudic: "#F8EDFE",
+        another: "#817dd7",
+        faded: "#e6e9f9",
       },
     },
   },
   plugins: [],
 };
+export default config;

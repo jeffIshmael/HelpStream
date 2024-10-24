@@ -1,68 +1,36 @@
-# React Framework + NextJS | Celo Composer
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-Celo Composer support React boilerplate template with TailwindCSS. This is a starter kit with no additional boilerplate code. It's a perfect starter kit to get your project started on Celo blockchain.
+## Getting Started
 
-## Setup & Installation
-
-
-### Set environment variables
-
-Create a copy of `.env.example` and rename it to `.env`.
-
-#### Add Wallet Connect ID
-
-You will need a Wallet Connect ID to run the project. You can create one here: https://cloud.walletconnect.com/sign-in
-
-Add the Wallet Connect ID in the `.env` file. 
-
-### Install dependencies
-
-Install all the required dependencies to run the dApp.
-
-Using **yarn**
+First, run the development server:
 
 ```bash
-yarn
-```
-
-or using **npm**
-
-```bash
-npm i
-```
-
-> React + Tailwind CSS Template does not have any dependency on hardhat.
-> This starterkit does not include connection of Hardhat/Truffle with ReactJS. It's up to the user to integrate smart contract with ReactJS. This gives user more flexibility over the dApp.
-
-- To start the dApp, run the following command.
-
-```bash
+npm run dev
+# or
 yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-## Dependencies
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-### Default
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-- [Next.js](https://nextjs.org/) app framework
-- [TailwindCSS](https://tailwindcss.com/) for UI
-- [rainbowkit-celo](https://www.npmjs.com/package/@celo/rainbowkit-celo), a plugin to help rainbowkit developers support the CELO protocol faster.
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Architecture
+## Learn More
 
-- `/pages` includes the main application components (specifically `index.tsx` and `_app.tsx`)
-  - `_app.tsx` includes configuration
-  - `index.tsx` is the main page of the application
-- `/components` includes components that are rendered in `index.tsx`
-- `/public` includes static files
+To learn more about Next.js, take a look at the following resources:
 
-## Environment Variables
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-Create a WalletConnect Cloud Project ID from [WalletConnect Cloud](https://cloud.walletconnect.com/)
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-Provide the WalletConnect Cloud Project ID in your `.env` file to use WalletConnect in your project. As shown in the `.env.example` file.
+## Deploy on Vercel
 
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-```typescript
-NEXT_PUBLIC_WC_PROJECT_ID=YOUR_EXAMPLE_PROJECT_ID;
-```
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
