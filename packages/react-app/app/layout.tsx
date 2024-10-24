@@ -18,14 +18,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="flex flex-col min-h-screen bg-nudic">
+      <body className="flex flex-col  bg-nudic">
         <BlockchainProviders>
           <Toaster />
           <Header /> {/* Stays at the top */}
-          <main className="flex-grow py-6 max-w-7xl mx-auto w-full sm:px-6 lg:px-8">
+          <main className="flex-grow py-6 max-w-7xl min-h-screen mx-auto w-full sm:px-6 lg:px-8">
             {children} {/* Main content area */}
           </main>
-          <Footer /> {/* Stays at the bottom */}
+          <Footer /> 
         </BlockchainProviders>
       </body>
     </html>

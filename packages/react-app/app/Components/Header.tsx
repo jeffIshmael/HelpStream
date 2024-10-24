@@ -15,7 +15,7 @@ export default function Header() {
 
   useEffect(() => {
     if (!isConnected) {
-      connect({ connector: injected({ target: "metaMask" }) });
+      // connect({ connector: injected({ target: "metaMask" }) });
     }
   }, [isConnected]);
 

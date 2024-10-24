@@ -20,13 +20,13 @@ interface Stream {
 }
 
 export default function Home() {
-  const [userAddress, setUserAddress] = useState("");
+  const [userAddress, setUserAddress] = useState('');
   const [isMounted, setIsMounted] = useState(false);
   const { address, isConnected } = useAccount();
   const { data, isPending, isError } = useReadContract({
     abi: contractAbi,
     address: contractAddress,
-    functionName: "getAllHelpStreams",
+    functionName: 'getAllHelpStreams',
     args: [],
   });
 
@@ -55,32 +55,31 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      {!isConnected && (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-600">
-          Connect your wallet to view available helpStreams.
-        </div>
-      )}
-
-      {streams.length === 0 && isConnected && (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-600">
-          No helpStreams available.
-        </div>
-      )}
-
-      {isPending && (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-600">
-          Loading helpStreams...
-        </div>
-      )}
-
-      <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-4">
-        {streams.map((stream: Stream, id: number) => (
-          <div key={id}>
-            <StreamCard streamDetails={stream} index={id} />
+    <div > {/* Flexbox and min-height */}
+      
+      <main className="flex-grow flex flex-col justify-center items-center"> {/* This will push footer down */}
+        {!isConnected && (
+          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-600">
+            Connect your wallet to view available helpStreams.
           </div>
-        ))}
-      </div>
+        )}
+
+        {isConnected && streams.length === 0  && (
+          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-600">
+            No helpStreams available.
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-4">
+          {streams.map((stream: Stream, id: number) => (
+            <div key={id}>
+              <StreamCard streamDetails={stream} index={id} />
+            </div>
+          ))}
+        </div>
+      </main>
+
+      {/* <Footer /> Footer always at the bottom */}
     </div>
   );
 }
