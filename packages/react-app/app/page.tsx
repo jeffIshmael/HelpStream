@@ -1,10 +1,10 @@
 "use client";
 
-import { contractAbi, contractAddress } from '@/Blockchain/abi/HelpStream';
-import { useEffect, useState } from 'react';
-import { useAccount, useReadContract } from 'wagmi';
-import StreamCard from './Components/StreamCard';
-import Footer from './Components/Footer';
+import { contractAbi, contractAddress } from "@/Blockchain/abi/HelpStream";
+import { useEffect, useState } from "react";
+import { useAccount, useReadContract } from "wagmi";
+import StreamCard from "./Components/StreamCard";
+import Footer from "./Components/Footer";
 
 interface Stream {
   id: number;
@@ -20,13 +20,13 @@ interface Stream {
 }
 
 export default function Home() {
-  const [userAddress, setUserAddress] = useState('');
+  const [userAddress, setUserAddress] = useState("");
   const [isMounted, setIsMounted] = useState(false);
   const { address, isConnected } = useAccount();
   const { data, isPending, isError } = useReadContract({
     abi: contractAbi,
     address: contractAddress,
-    functionName: 'getAllHelpStreams',
+    functionName: "getAllHelpStreams",
     args: [],
   });
 
@@ -62,9 +62,15 @@ export default function Home() {
         </div>
       )}
 
-      {streams.length === 0 && (
+      {streams.length === 0 && isConnected && (
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-600">
           No helpStreams available.
+        </div>
+      )}
+
+      {isPending && (
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-600">
+          Loading helpStreams...
         </div>
       )}
 

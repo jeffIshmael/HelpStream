@@ -1,6 +1,5 @@
 import "@rainbow-me/rainbowkit/styles.css";
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { BlockchainProviders } from "@/Providers/Blockchainproviders";
@@ -19,15 +18,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-nudic flex flex-col min-h-screen">
+      <body className="flex flex-col min-h-screen bg-nudic">
         <BlockchainProviders>
           <Toaster />
           <Header /> {/* Stays at the top */}
-          <div className="flex-grow py-6 max-w-7xl mx-auto space-y-8 sm:px-6 lg:px-8">
+          <main className="flex-grow py-6 max-w-7xl mx-auto w-full sm:px-6 lg:px-8">
             {children} {/* Main content area */}
-          </div>
-          <Footer />
-          
+          </main>
+          <Footer /> {/* Stays at the bottom */}
         </BlockchainProviders>
       </body>
     </html>
