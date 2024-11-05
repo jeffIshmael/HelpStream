@@ -1,10 +1,41 @@
-export const contractAddress = "0xE7569e4C32B4C6692fEc696D698ed0971C5bD328";
+export const contractAddress = "0x4FFE8EDDE62e89B196196dD075a694417Db26731";
 
-export const contractAbi =[
+export const contractAbi = [
   {
     "inputs": [],
     "stateMutability": "nonpayable",
     "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_id",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "_message",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_timestamp",
+        "type": "uint256"
+      }
+    ],
+    "name": "CommentAdded",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -68,6 +99,37 @@ export const contractAbi =[
       {
         "indexed": false,
         "internalType": "uint256",
+        "name": "_id",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "_newTitle",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "_newDescription",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_newTargetAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "HelpStreamEdited",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
         "name": "id",
         "type": "uint256"
       },
@@ -106,6 +168,24 @@ export const contractAbi =[
     "type": "event"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_message",
+        "type": "string"
+      }
+    ],
+    "name": "addComment",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "cUSDToken",
     "outputs": [
@@ -127,6 +207,39 @@ export const contractAbi =[
       }
     ],
     "name": "deleteHelpStream",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_newTitle",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_newIpfsHash",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_newDescription",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_newTargetAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "editHelpStream",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -222,6 +335,42 @@ export const contractAbi =[
         "type": "uint256"
       }
     ],
+    "name": "getComments",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "commenter",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "message",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct HelpStream.Comment[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      }
+    ],
     "name": "getHelpStream",
     "outputs": [
       {
@@ -280,6 +429,40 @@ export const contractAbi =[
         "internalType": "struct HelpStream.Helpstream",
         "name": "",
         "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "helpStreamComments",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "commenter",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "message",
+        "type": "string"
       }
     ],
     "stateMutability": "view",
