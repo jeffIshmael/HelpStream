@@ -36,6 +36,8 @@ _Helpstream Creation:_ Users can create helpstreams with custom descriptions, fu
 
 _Contributions and Funding:_ Supporters can fund helpstreams directly using cUSD, ensuring that all transactions are securely recorded on the blockchain.
 
+_Commenting section:_ Users can leave a comment in any helpstream. This can help in giving the creator of the helpstream some word of advice or word of encouragement.
+
 _Transparency and Security:_ The blockchain-backed architecture ensures all transactions are transparent, secure, and immutable. Donors can trace exactly where their contributions are going and the progress of each helpstream.
 
 _Real-time Monitoring:_ Users and donors can view live updates on the funds raised, contributors, and overall progress towards the helpstream goal.
