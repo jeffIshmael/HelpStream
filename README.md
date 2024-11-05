@@ -6,7 +6,7 @@
 
 ---
 
-<div align="center"> <table> <tr> <td align="center"> <img src="./homepage.png" width="100%" alt="Home Page" /> </td> <td align="center"> <img src="./creatingstream.png" width="100%" alt="Start stream" /> </td> </tr> <tr> <td align="center"> <img src="./funding.png" width="100%" alt="funding" /> </td>  </tr> </table> </div>
+<div align="center"> <table> <tr> <td align="center"> <img src="./home.png" width="100%" alt="Home Page" /> </td> <td align="center"> <img src="./create.png" width="100%" alt="Start stream" /> </td> </tr> <tr> <td align="center"> <img src="./fund.png" width="100%" alt="funding" /> </td> <td align="center"> <img src="./details.png" width="100%" alt="stream details" /></td> </tr><tr> <td align="center"> <img src="./comment.png" width="100%" alt="Comment page" /> </td> <td align="center"> <img src="./edit.png" width="100%" alt="Edit stream" /> </td> </tr>  </table> </div>
 
 ---
 
