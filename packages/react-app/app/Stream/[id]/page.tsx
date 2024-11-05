@@ -127,7 +127,7 @@ const Page = () => {
 
   useEffect(() => {
     for (let i = 0; i < streamDetails?.contributors?.length; i++) {
-      if (streamDetails.contributors[i] == address) {
+      if (streamDetails.contributors[i] === address?.toString()) {
         setHasContributed(true);
       }
     }
@@ -285,7 +285,7 @@ const Page = () => {
               onKeyDown={handleKeyDown} // Submit on Enter
             ></textarea>
             <button
-              className="mt-3 px-5 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-200 ease-in-out"
+              className={`mt-3 px-5 py-2  text-white rounded-lg  transition duration-200 ease-in-out ${ loading ? "bg-opacity-70 hover:cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
               onClick={submitComment}
               disabled={loading}
             >

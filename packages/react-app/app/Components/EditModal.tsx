@@ -207,10 +207,10 @@ const EditModal = ({
                 htmlFor="name"
                 className="text-sm font-medium text-gray-700"
               >
-                Title
-                <p className="text-xs text-gray-400 mb-2">
+                Title{" "}
+                <span className="text-xs text-gray-400 mb-2">
               (3 - 50 characters)
-            </p>
+            </span>
               </label>
               <input
                 id="name"
@@ -250,10 +250,10 @@ const EditModal = ({
               htmlFor="description"
               className="text-sm font-medium text-gray-700"
             >
-              Description
-              <p className="text-xs text-gray-400 mb-2">
+              Description{" "}
+              <span className="text-xs text-gray-400 mb-2">
               (10 - 200 characters)
-            </p>
+            </span>
             </label>
             <textarea
               id="description"
