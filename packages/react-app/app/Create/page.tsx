@@ -174,7 +174,10 @@ const Create = () => {
                 htmlFor="name"
                 className="text-sm font-medium text-gray-700"
               >
-                Title
+                Title 
+                <p className="text-xs text-gray-400 mb-2">
+              (3 - 50 characters)
+            </p>
               </label>
               <input
                 id="name"
@@ -212,6 +215,9 @@ const Create = () => {
               className="text-sm font-medium text-gray-700"
             >
               Description
+              <p className="text-xs text-gray-400 mb-2">
+              (10 - 200 characters)
+            </p>
             </label>
             <textarea
               id="description"
