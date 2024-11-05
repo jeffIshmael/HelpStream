@@ -285,7 +285,7 @@ const Page = () => {
               onKeyDown={handleKeyDown} // Submit on Enter
             ></textarea>
             <button
-              className={`mt-3 px-5 py-2  text-white rounded-lg  transition duration-200 ease-in-out ${ loading ? "bg-opacity-70 hover:cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
+              className={`mt-3 px-5 py-2   rounded-lg  transition duration-200 ease-in-out ${ loading ? "bg-blue-300 text-gray-500 hover:cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"}`}
               onClick={submitComment}
               disabled={loading}
             >
