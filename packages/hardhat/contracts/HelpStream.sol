@@ -36,6 +36,15 @@ contract HelpStream{
     
     Helpstream[] helpStreams;
 
+    struct Comment{
+        address commenter;
+        uint256 timestamp;
+        string message;
+    }
+
+    //mapping of comments and a helpstream
+    mapping(uint256 => Comment[]) public helpStreamComments;
+
     event HelpstreamRegistered(
         uint256 id,
         string title,
@@ -46,6 +55,8 @@ contract HelpStream{
     );
     event HelpStreamDeleted(uint256 id, uint256 _timestamp,string title,uint256 _raisedAmount);
     event Funded( address sender,uint256 _id,uint256 _amount);
+    event HelpStreamEdited(uint256 _id, string _newTitle, string _newDescription, uint256 _newTargetAmount);
+    event CommentAdded(uint256 _id,address sender,string _message, uint256 _timestamp);
 
     // Function to register a new helpstream
     function registerHelpStream(
@@ -54,6 +65,7 @@ contract HelpStream{
         string memory _ipfsHash,
         uint256 _targetAmount
     ) public {
+        require(_targetAmount > 0 , "The target amount can't be 0");
         Helpstream memory newHelpstream = Helpstream({
             id: totalHelpStreams, // Use the length of the array as the ID
             title: _title,
@@ -121,6 +133,50 @@ contract HelpStream{
         }
 
         emit Funded(msg.sender, _id, _amount);
+    }
+
+    // Edit helpstream details (only creator)
+    function editHelpStream(
+        uint256 _id,
+
+        string memory _newTitle,
+        string memory _newIpfsHash,
+        string memory _newDescription,
+        uint256 _newTargetAmount
+    ) public {
+        require(_id < helpStreams.length, "Helpstream does not exist");
+
+        Helpstream storage helpstream = helpStreams[_id];
+        require(helpstream.creator == msg.sender, "Only the creator can edit this helpstream");
+
+        helpstream.title = _newTitle;
+        helpstream.ipfsHash = _newIpfsHash;
+        helpstream.description = _newDescription;
+        helpstream.targetAmount = _newTargetAmount;
+        helpstream.remaining = _newTargetAmount - helpstream.raisedAmount;
+
+        emit HelpStreamEdited(_id, _newTitle, _newDescription, _newTargetAmount);
+    }
+
+     // Add a comment to a helpstream
+    function addComment(uint256 _id, string memory _message) public {
+        require(_id < helpStreams.length, "Helpstream does not exist");
+
+        Comment memory newComment = Comment({
+            commenter: msg.sender,
+            message: _message,
+            timestamp: block.timestamp
+        });
+
+        helpStreamComments[_id].push(newComment);
+
+        emit CommentAdded(_id, msg.sender, _message, block.timestamp);
+    }
+
+    // Get comments for a helpstream
+    function getComments(uint256 id) public view returns (Comment[] memory) {
+        require(id < helpStreams.length, "Helpstream does not exist");
+        return helpStreamComments[id];
     }
 
     // Helper function to get all helpstreams 

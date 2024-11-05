@@ -1,27 +1,58 @@
 "use client";
 
 require("dotenv").config();
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useAccount, useWriteContract } from "wagmi";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 import { contractAbi, contractAddress } from "@/Blockchain/abi/HelpStream";
 
-const Create = () => {
+interface EditModalProps {
+  id: number;
+  title: string;
+  ipfsHash: string;
+  description: string;
+  targetAmount: number;
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
+}
+
+const EditModal = ({
+  id,
+  title,
+  ipfsHash,
+  description,
+  targetAmount,
+  loading,
+  setLoading,
+}: EditModalProps) => {
   const [file, setFile] = useState(null);
   const [cid, setCid] = useState("");
-  const [uploading, setUploading] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [upLoaded, setUpLoaded] = useState(false);
   const inputFile = useRef(null);
-  const { writeContractAsync, isPending } = useWriteContract();
+  const { writeContractAsync } = useWriteContract();
   const { address, isConnected } = useAccount();
   const [invalid, setInvalid] = useState(false);
   const router = useRouter();
 
+  const initialValues = {
+    title: title,
+    ipfsHash: ipfsHash,
+    description: description,
+    targetAmount: Number(targetAmount) / 10 ** 18,
+  };
+
+  const [formValues, setFormValues] = useState(initialValues);
+  const [hasChanges, setHasChanges] = useState(false);
+
+  // Check if form values differ from initial values
+  useEffect(() => {
+    setHasChanges(JSON.stringify(formValues) !== JSON.stringify(initialValues));
+  }, [formValues]);
+
   const uploadFile = async (fileToUpload: any) => {
     try {
-      setUploading(true);
       const data = new FormData();
       data.set("file", fileToUpload);
       const res = await fetch("/api/files", {
@@ -30,38 +61,11 @@ const Create = () => {
       });
       const resData = await res.json();
       setCid(resData.IpfsHash);
-      console.log(resData.IpfsHash);
-      setUploading(false);
+      setUpLoaded(true);
     } catch (e) {
       console.log(e);
-      setUploading(false);
       alert("Trouble uploading file");
     }
-  };
-
-  const handleChange = (e: any) => {
-    const selectedFile = e.target.files[0];
-
-    // Validate file type and size
-    const validTypes = ["image/jpeg", "image/png", "image/gif"]; // Allowed file types
-    const maxSize = 5 * 1024 * 1024; // 5 MB
-
-    if (!validTypes.includes(selectedFile.type)) {
-      setInvalid(true);
-      toast.error("Only JPG, PNG, and GIF files are allowed.");
-      return; // Prevent further execution if the file type is invalid
-    }
-
-    if (selectedFile.size > maxSize) {
-      setInvalid(true);
-      toast.error("File size must be less than 5 MB.");
-      return; // Prevent further execution if the file size exceeds the limit
-    }
-
-    setFile(selectedFile); // Only set the file if it's valid
-    uploadFile(selectedFile); // Proceed with the upload
-    setInvalid(false);
-    console.log(invalid);
   };
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
@@ -75,16 +79,16 @@ const Create = () => {
     if (invalid) {
       toast.error("Please upload JPG,PNG and GIF");
       return;
-    }   
+    }
 
     const formData = new FormData(e.target as HTMLFormElement);
     const data = Object.fromEntries(formData.entries());
     console.log(data);
 
     // Validate the form data
-    const title = data.name.toString().trim();
-    const description = data.description.toString().trim();
-    const targetAmount = Number(data.amount);
+    const title = formValues.title.toString().trim();
+    const description = formValues.description.toString().trim();
+    const targetAmount = Number(formValues.targetAmount);
 
     // Title validation
     if (title.length < 3 || title.length > 50) {
@@ -109,43 +113,75 @@ const Create = () => {
       const hash = await writeContractAsync({
         address: contractAddress,
         abi: contractAbi,
-        functionName: "registerHelpStream",
-        args: [title, description, cid, BigInt(targetAmount * 10 ** 18)],
+        functionName: "editHelpStream",
+        args: [
+          BigInt(id),
+          title,
+          upLoaded ? cid : formValues.ipfsHash,
+          description,
+          BigInt(targetAmount * 10 ** 18),
+        ],
       });
       if (hash) {
         console.log(hash);
-        toast("HelpStream has been created", {
-          description: "Reload page.",
-        });
+        toast(`${title} has been updated!`);
+        setLoading(false);
         router.push("/");
       } else {
         toast("Something happened, try again.");
       }
     } catch (e) {
       console.log(e);
-      toast.error("Failed to create event, try again.");
+      toast.error("Failed to update, try again.");
       return;
     } finally {
       setLoading(false);
     }
   }
 
+  const handleChange = (e: any) => {
+    const selectedFile = e.target.files[0];
+    const validTypes = ["image/jpeg", "image/png", "image/gif"];
+    const maxSize = 5 * 1024 * 1024;
+
+    if (!validTypes.includes(selectedFile.type)) {
+      setInvalid(true);
+      toast.error("Only JPG, PNG, and GIF files are allowed.");
+      return;
+    }
+
+    if (selectedFile.size > maxSize) {
+      setInvalid(true);
+      toast.error("File size must be less than 5 MB.");
+      return;
+    }
+
+    setFile(selectedFile);
+    uploadFile(selectedFile);
+    setInvalid(false);
+    setHasChanges(true);
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
   return (
     <div>
       <section className="bg-white rounded-lg mx-auto max-w-lg space-y-2 px-8 py-10 shadow-lg shadow-gray-300">
-        {/* Header */}
         <div className="text-center space-y-2">
-          <h1 className="text-2xl font-bold text-gray-900">
-            Start a Helpstream
+          <h1 className="text-lg font-semibold text-gray-900">
+            Edit {initialValues.title}
           </h1>
-          <p className="text-gray-500">
-            Fill out the details below to create a new helpstream.
-          </p>
         </div>
 
-        {/* Form */}
         <form onSubmit={submit} className="space-y-6">
-          {/* Poster Upload */}
           <div className="space-y-1">
             <label
               htmlFor="poster"
@@ -162,13 +198,10 @@ const Create = () => {
               ref={inputFile}
               onChange={handleChange}
               className="block w-full text-gray-600 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-another"
-              required
             />
           </div>
 
-          {/* Title and Description */}
           <div className="grid gap-4 md:grid-cols-2">
-            {/* Title */}
             <div className="space-y-2">
               <label
                 htmlFor="name"
@@ -178,14 +211,15 @@ const Create = () => {
               </label>
               <input
                 id="name"
-                name="name"
+                name="title"
+                value={formValues.title}
+                onChange={handleInputChange}
                 className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 placeholder="Enter helpstream title"
                 required
               />
             </div>
 
-            {/* Target Amount */}
             <div className="space-y-2">
               <label
                 htmlFor="amount"
@@ -195,8 +229,10 @@ const Create = () => {
               </label>
               <input
                 id="amount"
-                name="amount"
+                name="targetAmount"
                 type="number"
+                value={formValues.targetAmount}
+                onChange={handleInputChange}
                 className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-another"
                 placeholder="Enter target amount"
                 step={0.01}
@@ -205,7 +241,7 @@ const Create = () => {
               />
             </div>
           </div>
-          {/* Description */}
+
           <div className="space-y-2">
             <label
               htmlFor="description"
@@ -216,22 +252,24 @@ const Create = () => {
             <textarea
               id="description"
               name="description"
+              value={formValues.description}
+              onChange={handleInputChange}
               className="w-full h-24 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-another"
               placeholder="Enter description"
               required
             />
           </div>
 
-          {/* Submit Button */}
           <button
-            className={`w-full py-3 bg-another text-white font-medium rounded-lg  transition-all duration-300 ease-in-out focus:ring-2 focus:ring-another focus:outline-none ${
-              loading
-                ? "bg-opacity-60 hover:cursor-not-allowed"
+            className={`w-full py-3 bg-another text-white font-medium rounded-lg transition-all duration-300 ease-in-out focus:ring-2 focus:ring-another focus:outline-none ${
+              !hasChanges || loading 
+                ? "bg-opacity-60 hover:bg-opacity-60 cursor-not-allowed"
                 : "hover:bg-opacity-80"
             }`}
             type="submit"
+            disabled={!hasChanges || loading }
           >
-            {loading ? "Creating..." : "Create Helpstream"}
+            {loading ? "Updating..." : "Update"}
           </button>
         </form>
       </section>
@@ -239,4 +277,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default EditModal;

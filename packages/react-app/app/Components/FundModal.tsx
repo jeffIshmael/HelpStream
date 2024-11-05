@@ -91,6 +91,11 @@ const FundModal = ({
       return;
     }
 
+    if (details.fullyFunded == true){
+      toast.error("Stream is fully funded.");
+      return;
+    }
+
     try {
       setLoading(true); // Set loading state when processing starts
       const paid = await processCheckout(
@@ -138,8 +143,8 @@ const FundModal = ({
           placeholder="Enter Amount"
           name="amount"
           type="number"
-          step="0.001"  
-          min={0}
+          step={0.001}  
+          min={0.01}
         />
         <p className="flex justify-end text-gray-500">
           Balance: {(balance / 10 ** 18).toFixed(2)} cUSD
